@@ -1,0 +1,56 @@
+extends ../../layout/default
+block append head 
+    link(rel="stylesheet", href="/admin/css/detail.css")
+
+block main
+  .product-detail-card
+    h1.title Chi tiết sản phẩm
+
+    .detail-wrapper
+      .image-box
+        img.product-img(
+          src=product.thumbnail
+          alt=product.title
+        )
+
+      .info-box
+        h2.product-title #{product.title}
+
+        p.info-row
+          strong.info-label Mô tả:
+          span.info-text #{product.description}
+
+        p.info-row
+          strong.info-label Giá:
+          span.price #{product.price} VNĐ
+
+        p.info-row
+          strong.info-label Giảm giá:
+          span.info-text #{product.discountPercentage} %
+
+        p.info-row
+          strong.info-label Tồn kho:
+          span.info-text #{product.stock}
+
+        p.info-row
+          strong.info-label Trạng thái:
+          span.badge.status-badge #{product.status === 'active' ? 'Còn hàng' : 'Hết hàng'}
+
+        p.info-row
+          strong.info-label Vị trí:
+          span.info-text #{product.position}
+
+        p.info-row
+          strong.info-label Deleted:
+          span.badge.delete-badge #{product.deleted === true ? 'Đã xóa' : 'Chưa xóa'}
+
+        hr.sep
+
+        p.meta
+          | Tạo lúc: #{createFormatDate}
+          br
+          | Cập nhật lúc: #{updateFormatDate}
+
+        .buttons
+          a.btn.back(href=`${prefixAdmin}/products`) Quay lại
+          a.btn.edit(href=`${prefixAdmin}/products/edit/${product._id}`) Sửa

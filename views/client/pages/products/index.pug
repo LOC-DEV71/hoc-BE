@@ -1,0 +1,22 @@
+extends ../../layout/default.pug
+include ../../mixins/box-head.pug
+block main 
+    .container 
+        .row 
+            .col-12 
+                +box-head(title)
+        .row
+            each item in products 
+                a(
+                    class="col-3 mb-3"
+                    href=`/products/${item.slug}`
+                    style ="text-decoration: none; color: inherit;" 
+                )
+                    .products-item 
+                        .inner-img 
+                            img(src=item.thumbnail, alt=item.title)
+                        .inner-content 
+                            h3.inner-title #{item.title}
+                            .inner-price-now #{item.priceNew.toFixed(0)}$                   
+                            .inner-price-old #{item.price}$
+                            .inner-discount #{item.discountPercentage}%

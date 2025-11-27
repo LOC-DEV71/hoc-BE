@@ -1,0 +1,118 @@
+/* detail */
+.product-detail-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-top: 90px;
+}
+
+.title {
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.debug {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-family: monospace;
+    color: #444;
+}
+
+.detail-wrapper {
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+}
+
+.image-box {
+    flex: 1;
+    text-align: center;
+}
+
+.product-img {
+    width: 100%;
+    max-height: 330px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.info-box {
+    flex: 2;
+    font-size: 16px;
+}
+
+.product-title {
+    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.info-row {
+    margin: 6px 0;
+}
+
+.info-label {
+    margin-right: 6px;
+    color: #444;
+}
+
+.info-text {
+    color: #555;
+}
+
+.price {
+    color: #e63946;
+    font-weight: bold;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.status-badge {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.delete-badge {
+    background: #dc3545;
+    color: #fff;
+}
+
+.sep {
+    margin: 20px 0;
+}
+
+.meta {
+    color: #777;
+    font-size: 14px;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.btn.back {
+    background: #6c757d;
+}
+
+.btn.edit {
+    background: #f0ad4e;
+}
+
+/* end detail */

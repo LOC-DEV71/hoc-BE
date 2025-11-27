@@ -1,0 +1,53 @@
+/* Card sản phẩm */
+.products-item {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  transition: all 0.3s ease;
+  height: 100%;
+  padding: 10px;
+}
+
+.products-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.products-item .inner-img img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.products-item .inner-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 10px 0;
+  color: #333;
+}
+
+.products-item .inner-price-now {
+  color: #dc3545; /* Bootstrap danger */
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.products-item .inner-price-old {
+  text-decoration: line-through;
+  color: #6c757d; /* Bootstrap muted */
+  font-size: 0.9rem;
+  margin-left: 5px;
+}
+
+.products-item .inner-discount {
+  display: inline-block;
+  margin-top: 6px;
+  background: #dc3545;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+

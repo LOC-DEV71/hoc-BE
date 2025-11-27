@@ -1,0 +1,36 @@
+.header{
+    border-bottom: 1px solid rgb(216, 215, 215);
+    padding: 10px 0px 0px 0px    ;
+}
+
+.header .inner-logo img{
+    width: 150px;
+    max-width: 100%;
+}
+
+.header .inner-menu  ul{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0;
+    list-style: none;
+    flex-wrap: wrap;
+}
+       
+.header .inner-menu  ul li{
+    margin-right: 20px;
+}
+
+.header .inner-menu ul li a{
+    text-decoration: none;
+}
+
+
+/* footer */
+.footer{
+    text-align: center;
+    background: black;
+    color: white;
+    padding: 5px;
+}
+

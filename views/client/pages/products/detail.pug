@@ -1,0 +1,76 @@
+extends ../../layout/default.pug
+
+block append head 
+    link(rel="stylesheet", href="/css/detail.css")
+block main
+    .product-detail-page
+        a.back-btn(href=`/products`) ← Quay lại
+
+        h1.title Chi tiết sản phẩm
+
+        .card
+            .card-header Thông tin sản phẩm
+                .card-body.overview
+                    .thumb-box
+                        img(
+                            src=`${product.thumbnail}`
+                            alt=product.title
+                        )
+
+                    .info
+                        h2.product-name= product.title
+
+                    .text-row
+                        span.label Slug:
+                        span.value= product.slug
+
+                    .text-row
+                        span.label Trạng thái:
+                        if product.status == "active"
+                            span.badge.active Hoạt động
+                        else
+                            span.badge.inactive Ngừng hoạt động
+
+                    .text-row
+                        span.label Vị trí:
+                        span.value= product.position
+
+            .card
+                .card-header Giá Tồn kho
+                    .card-body
+                        .table
+                        .row
+                            .cell.label Giá gốc
+                            .cell= priceNew + ' $'
+
+                        .row
+                            .cell.label Giảm giá (%)
+                            .cell= product.discountPercentage + ' %'
+
+                        .row
+                            .cell.label Tồn kho
+                            .cell= product.stock + ' sản phẩm'
+
+            .card
+                .card-header Mô tả
+                    .card-body
+                        if product.description
+                            p.description= product.description
+                        else
+                            p.description.empty (Không có mô tả)
+
+            .card
+                .card-header Thông tin hệ thống
+                    .card-body
+                        .table
+                            .row
+                                .cell.label Deleted
+                                .cell= product.deleted
+
+                            .row
+                                .cell.label Created At
+                                .cell= product.createdAt
+
+                            .row
+                                .cell.label Updated At
+                                .cell= product.updatedAt
