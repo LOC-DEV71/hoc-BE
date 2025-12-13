@@ -14,6 +14,8 @@ const adminroute = require("./routes/admin/index-routes");
 // Routes cho admin (view)
 const dataBase = require("./config/dataBase");
 // Kết nối MongoDB
+const path = require("path");
+//MCE file path
 const app = express();
 const port = process.env.PORT;
 
@@ -50,6 +52,10 @@ app.use(flash());
 // Cho phép hiển thị flash message (thông báo một lần)
 
 // ================================================= //
+
+
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+// Dùng để tạo công cụ soạn thảo TinyMCE
 
 
 app.locals.prefixAdmin = PATH_ADMIN = require("./config/system").prefixAdmin;

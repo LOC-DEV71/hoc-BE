@@ -1,0 +1,22 @@
+extends ../../layout/default
+include ../../mixins/table-tree
+block main
+    h1 #{title}
+
+    .col-md-3.mb-3
+      a(
+        href=`${prefixAdmin}/products-category/create`
+        class="btn btn-outline-success w-100"
+      ) + Thêm danh mục
+
+    table.table.table-bordered.table-hover
+      thead
+        tr
+          th(style="width: 70px") #
+          th Ảnh
+          th Tên danh mục
+          th Vị trí
+          th Trạng thái
+          th(style="width: 160px") Hành động
+      tbody
+        +table-tree(category)

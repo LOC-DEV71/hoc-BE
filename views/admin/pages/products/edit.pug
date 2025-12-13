@@ -1,5 +1,7 @@
 extends ../../layout/default
 include ../../mixins/alert-success.pug
+include ../../mixins/select-tree
+
 block main 
     h1(class="mb-4") #{title}
 
@@ -21,12 +23,20 @@ block main
                 value=products.title
             )
         div(class="form-group")
-            label(for="desc") Mô tả
-            textarea(
+            label(for="title") Danh mục
+            select(
+                name="product_category_id"
+                id="product_category_id"
                 class="form-control"
-                id="desc"
+            ) 
+                option(value="") ---Chọn danh mục--- 
+                if(category)
+                    +select-tree(category, 1, products.product_category_id)
+        div(class="form-group")
+            label(for="desc") Mô tả
+            textarea#description.form-control(
                 name="description"
-                rows="5"
+                rows="10"
             )= products.description
         div(class="form-group")
             label(for="price") Giá

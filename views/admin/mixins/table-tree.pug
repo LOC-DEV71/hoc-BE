@@ -1,0 +1,47 @@
+mixin table-tree(category, level = 0)
+    if category && category.length > 0
+        each item in category
+            tr
+                td #{item.index}
+
+                td
+                    if item.thumbnail
+                        img(
+                            src=item.thumbnail
+                            style="width:60px;height:60px;object-fit:cover;border-radius:6px"
+                        )
+                    else
+                        span.text-muted Không có ảnh
+
+                td
+                    - const prefix = '-- '.repeat(level)
+                    strong #{prefix} #{item.title}
+                    if item.parent_id
+                        br
+                        small.text-muted Parent: #{item.parent_id}
+
+                td 
+                    input(type="number" value=item.position)
+
+                td
+                    if item.status == 'active'
+                        span.badge.bg-success Hoạt động
+                    else
+                        span.badge.bg-secondary Ẩn
+
+                td
+                    a.btn.btn-sm.btn-warning(
+                        href=`${prefixAdmin}/products-category/edit/${item._id}`
+                    ) Sửa
+                    form(
+                        action=`${prefixAdmin}/products-category/delete/${item._id}?_method=DELETE`
+                        method="POST"
+                        style="display:inline-block;margin-left:5px"
+                    )
+                        button.btn.btn-sm.btn-danger(type="submit") Xóa
+
+            if item.children && item.children.length > 0
+                +table-tree(item.children, level + 1)
+    else
+        tr
+            td(colspan="7").text-center.text-muted Không có danh mục nào

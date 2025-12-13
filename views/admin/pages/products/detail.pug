@@ -18,11 +18,14 @@ block main
 
         p.info-row
           strong.info-label Mô tả:
-          span.info-text #{product.description}
+          span.info-text!= product.description
 
         p.info-row
           strong.info-label Giá:
           span.price #{product.price} VNĐ
+        p.info-row
+          strong.info-label Id category:
+          span.price #{product.product_category_id}
 
         p.info-row
           strong.info-label Giảm giá:

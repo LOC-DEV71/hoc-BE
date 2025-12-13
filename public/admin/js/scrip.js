@@ -151,7 +151,6 @@ if(buttonDelete.length > 0){
             const isConfirm = confirm("Bạn có chắc muốn xóa sản phẩm không?");
             if(isConfirm){
                 const id = button.getAttribute("data-id");
-                console.log(id)
                 const action = `${path}/${id}?_method=DELETE`
                 formDeleteItem.action = action;
                 formDeleteItem.submit();
@@ -179,3 +178,47 @@ if(showAlert){
 }
 
 // end show alert
+
+
+// sort products
+const sort = document.querySelector("div[sort]");
+if(sort){
+    const sortSelect = sort.querySelector("select[sort-select]");
+    const sortClear = sort.querySelector("button[sort-clear]");
+
+    sortSelect.addEventListener("change", (e) => {
+        const value = e.target.value;
+        let [sortKey, sortValue] = value.split("-");
+        let url = new URL(window.location.href);
+
+        url.searchParams.set("sortKey", sortKey);
+        url.searchParams.set("sortValue", sortValue);
+
+        window.location.href = url.href;
+    });
+
+    sortClear.addEventListener("click", () => {
+        let url = new URL(window.location.href);
+        url.searchParams.delete("sortKey");
+        url.searchParams.delete("sortValue");
+        window.location.href = url.href;
+    });
+
+
+    // thêm selected cho option
+    let url = new URL(window.location.href);
+
+    const sortKey = url.searchParams.get("sortKey");
+    const sortValue = url.searchParams.get("sortValue");
+
+    if(sortKey && sortValue){
+        const optionValue = `${sortKey}-${sortValue}`;
+        const optionSelected = sort.querySelector(`option[value='${optionValue}']`);
+        if(optionSelected){
+            optionSelected.selected = true;
+        }
+    }
+    }
+
+    
+// end sort products

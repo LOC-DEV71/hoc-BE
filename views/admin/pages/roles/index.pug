@@ -1,0 +1,48 @@
+extends ../../layout/default
+block main
+    h1 #{title}
+    .col-md-3.mb-3
+      a(
+        href=`${prefixAdmin}/roles/create`
+        class="btn btn-outline-success w-100"
+      ) + Thêm danh mục
+
+    table.table.table-bordered.table-hover
+      thead
+        tr
+          th STT
+          th Nhóm quyền
+          th Mô tả
+          th(style="width: 200px") Hành động
+      tbody
+        if roles && roles.length > 0
+          each item, index in roles 
+            tr 
+              td #{index + 1}
+              td #{item.title}
+              td #{item.description}
+              td
+                a(
+                  class="btn btn-sm btn-primary ml-1"
+                  href=`${prefixAdmin}/roles/detail/${item._id}`
+                ) Chi tiết
+                a(
+                  class="btn btn-sm btn-warning ml-1"
+                  href=`${prefixAdmin}/roles/edit/${item._id}`
+                ) Sửa
+                button(
+                  class="btn btn-sm btn-danger mb-1"
+                  button-deleted
+                  data-id=item._id
+                ) Xóa
+      
+        else 
+          tr 
+            td(colspan="4" class="text-center") Chưa có bản ghi nào được tạo
+  
+    form(
+      action=""
+      method="POST"
+      id="form-delete-status"
+      data-path=`${prefixAdmin}/roles/delete`
+    ) 

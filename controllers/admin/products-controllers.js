@@ -1,8 +1,11 @@
 const Product = require("../../models/products-models");
+const ProductCategorySchema = require("../../models/products.category.model");
 const fillterStatusHelper = require("../../helpers/fillterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const generateSlug = require("../../helpers/slugHelper");
+const createTreeHelper = require("../../helpers/create-tree");
+
 //[GET] /admin/products
 module.exports.products = async (req, res) => {
     let find = {
@@ -49,10 +52,21 @@ module.exports.products = async (req, res) => {
     // end pagination
 
 
+    // sort
+    const sort = {}
+
+    if(req.query.sortKey && req.query.sortValue){
+        sort[req.query.sortKey] = req.query.sortValue;
+    }else{
+        sort.position = "desc";
+    } 
+    // end sort
+
+
     try {
         const products = await Product
             .find(find)
-            .sort({position: "desc"})
+            .sort(sort)
             .limit(objectPagination.limitItem)
             .skip(objectPagination.skip);
         // console.log(products);
@@ -147,8 +161,14 @@ module.exports.deleteItem = async (req, res) =>{
 
 //[GET] /admin/products/create
 module.exports.create = async (req, res) =>{
+    const find ={
+        deleted: false
+    }
+    const category = await ProductCategorySchema.find(find);
+    const newCategory = createTreeHelper.tree(category);
     res.render("admin/pages/products/create", {
         title: "Thêm sản phẩm mới",
+        category: newCategory
     })
 }
 
@@ -182,10 +202,15 @@ module.exports.edit = async (req, res) => {
         deleted: false,
         _id: req.params.id
     };
+    const category = await ProductCategorySchema.find({
+        deleted: false
+    });
     const products = await Product.findOne(find);
+        const newCategory = createTreeHelper.tree(category);
     res.render("admin/pages/products/edit", {
         title: "Chỉnh sửa sản phẩm",
-        products: products
+        products: products,
+        category: newCategory
     });
    } catch (error) {
     res.redirect("/admin/products");

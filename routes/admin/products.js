@@ -2,7 +2,13 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../../controllers/admin/products-controllers");
 const multer = require("multer");
-const upload = multer();
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024,  // 10MB cho file
+    fieldSize: 10 * 1024 * 1024  // 10MB cho nội dung text form
+  }
+});
 const validate = require("../../validates/admin/productsValidates");
 const uploadCloud = require("../../middleware/admin/uploadCloud-middleware");
 
