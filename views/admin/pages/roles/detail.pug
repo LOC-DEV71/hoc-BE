@@ -1,6 +1,26 @@
 extends ../../layout/default
+
 block main 
     h1 #{title}
-    div #{roles.title}
-    div #{roles.description}
-    div #{roles.permissions}
+
+    div
+        b Role:
+        |  #{roles.title}
+
+    div
+        b Mô tả:
+        |  #{roles.description}
+
+    h3 Các quyền
+    ul
+        each item in roles.permissions
+            if item == "products-category_view"
+                li Quyền xem
+            else if item == "products-category_create"
+                li Quyền thêm
+            else if item == "products-category_edit"
+                li Quyền sửa
+            else if item == "products-category_delete"
+                li Quyền xóa
+
+    a(href=`${prefixAdmin}/roles` ) Quay lại

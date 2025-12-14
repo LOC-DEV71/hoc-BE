@@ -47,3 +47,28 @@ if(tablePermission){
     })
 }
 // end permission
+
+
+// permission data default
+const dataRecord = document.querySelector("div[data-record]");
+if(dataRecord){
+    const record = JSON.parse(dataRecord.getAttribute("data-record"));
+
+    const tablePermission = document.querySelector("table[table-permission]");
+
+    console.log(record)
+    
+    record.forEach((record, index) => {
+        const permission = record.permissions;
+        
+        permission.forEach(permission => {
+            const row = tablePermission.querySelector(`tr[data-name="${permission}"]`);
+
+            const input = row.querySelectorAll("input")[index];
+
+            input.checked = true;
+        })
+    })
+    
+}
+// end permission data default
