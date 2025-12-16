@@ -1,0 +1,81 @@
+extends ../../layout/default
+
+block main 
+    h1 #{title}
+    .col-md-3.mb-3
+        a(
+            class="btn btn-outline-success w-100"
+            href=`${prefixAdmin}/accounts/create`
+        ) Thêm tài khoản
+    
+    
+
+    .table-responsive
+        table.table.table-bordered.table-hover.align-middle.mb-0
+            thead.table-light
+                tr
+                th.text-center(style="width:70px") STT
+                th.text-center(style="width:90px") Avatar
+                th(style="min-width:160px") Họ tên
+                th(style="min-width:170px") Phân quyền
+                th(style="min-width:220px") Email
+                th.text-center(style="width:120px") Trạng thái
+                th.text-center(style="width:210px") Hành động
+
+            tbody
+                if record && record.length > 0
+                    each item, index in record
+                        tr
+                            td.text-center.fw-semibold #{index + 1}
+
+                            td.text-center
+                                if item.avatar
+                                    img(
+                                        src=item.avatar
+                                        alt="avatar"
+                                        style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1px solid #e5e5e5"
+                                    )
+                                else
+                                    div(
+                                        style="width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;border:1px dashed #ccc;color:#888"
+                                    ) N/A
+
+                            td
+                                .fw-semibold #{item.fullname || "Chưa có tên"}
+                                if item.phone
+                                    small.text-muted #{item.phone}
+
+                            td
+                                span.badge.bg-dark #{item.role.title}
+
+                            td
+                                code #{item.email}
+
+                            td.text-center
+                                if item.status === "active"
+                                    span.badge.bg-success.px-3 Hoạt động
+                                else
+                                    span.badge.bg-secondary.px-3 Tạm dừng
+
+                            td.text-center
+                                .btn-group(role="group")
+                                a.btn.btn-sm.btn-outline-secondary(
+                                    href=`${prefixAdmin}/accounts/detail/${item._id}`
+                                ) Chi tiết
+                                a.btn.btn-sm.btn-warning(
+                                    href=`${prefixAdmin}/accounts/edit/${item._id}`
+                                ) Sửa
+                                button(
+                                    class="btn btn-sm btn-danger mb-1"
+                                    button-deleted
+                                    data-id=item.id
+                                ) Xóa
+                else
+                    tr
+                        td(colspan="7").text-center.text-muted.py-4 Không có dữ liệu
+    form(
+      action=""
+      method="POST"
+      id="form-delete-status"
+      data-path=`${prefixAdmin}/accounts/delete`
+    ) 
