@@ -1,5 +1,6 @@
 extends ../../layout/default
 block main
+  if(role.permissions.includes("Roles_view"))
     h1 #{title}
     .col-md-3.mb-3
       a(
@@ -22,19 +23,22 @@ block main
               td #{item.title}
               td #{item.description}
               td
-                a(
-                  class="btn btn-sm btn-primary ml-1"
-                  href=`${prefixAdmin}/roles/detail/${item._id}`
-                ) Chi tiết
-                a(
-                  class="btn btn-sm btn-warning ml-1"
-                  href=`${prefixAdmin}/roles/edit/${item._id}`
-                ) Sửa
-                button(
-                  class="btn btn-sm btn-danger mb-1"
-                  button-deleted
-                  data-id=item._id
-                ) Xóa
+                if(role.permissions.includes("Roles_view"))
+                  a(
+                    class="btn btn-sm btn-primary ml-1"
+                    href=`${prefixAdmin}/roles/detail/${item._id}`
+                  ) Chi tiết
+                if(role.permissions.includes("roles_edit"))
+                  a(
+                    class="btn btn-sm btn-warning ml-1"
+                    href=`${prefixAdmin}/roles/edit/${item._id}`
+                  ) Sửa
+                if(role.permissions.includes("roles_delete"))
+                  button(
+                    class="btn btn-sm btn-danger mb-1"
+                    button-deleted
+                    data-id=item._id
+                  ) Xóa
       
         else 
           tr 

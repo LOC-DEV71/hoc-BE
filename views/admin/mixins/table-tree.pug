@@ -24,21 +24,39 @@ mixin table-tree(category, level = 0)
                     input(type="number" value=item.position)
 
                 td
-                    if item.status == 'active'
-                        span.badge.bg-success Hoạt động
-                    else
-                        span.badge.bg-secondary Ẩn
+                    if(role.permissions.includes("products-category_edit"))
+                        if item.status === 'active'
+                            a.badge.bg-success.text-decoration-none(
+                            href="javascript:;"
+                            data-status=item.status
+                            data-id=item.id
+                            button-change-status
+                        ) Còn hàng
+                        else
+                            a.badge.bg-danger.text-decoration-none(
+                            href="javascript:;"
+                            data-status=item.status
+                            data-id=item.id
+                            button-change-status
+                        ) Hết hàng
+                    else 
+                        if item.status === 'active'
+                            p.badge.bg-success.text-decoration-none Còn hàng
+                        else
+                            p.badge.bg-danger.text-decoration-none Hết hàng
 
                 td
-                    a.btn.btn-sm.btn-warning(
-                        href=`${prefixAdmin}/products-category/edit/${item._id}`
-                    ) Sửa
-                    form(
-                        action=`${prefixAdmin}/products-category/delete/${item._id}?_method=DELETE`
-                        method="POST"
-                        style="display:inline-block;margin-left:5px"
-                    )
-                        button.btn.btn-sm.btn-danger(type="submit") Xóa
+                    if(role.permissions.includes("products-category_edit"))
+                        a.btn.btn-sm.btn-warning(
+                            href=`${prefixAdmin}/products-category/edit/${item._id}`
+                        ) Sửa
+                    if(role.permissions.includes("products-category_delete"))
+                        form(
+                            action=`${prefixAdmin}/products-category/delete/${item._id}?_method=DELETE`
+                            method="POST"
+                            style="display:inline-block;margin-left:5px"
+                        )
+                            button.btn.btn-sm.btn-danger(type="submit") Xóa
 
             if item.children && item.children.length > 0
                 +table-tree(item.children, level + 1)

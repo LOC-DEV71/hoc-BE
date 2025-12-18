@@ -4,99 +4,102 @@ include ../../mixins/alert-success.pug
 
 block main
     +alert-error(3000)
-    h1 #{title}     
-    form(
-        action=`${prefixAdmin}/products-category/edit/${data.id}?_method=PATCH`
-        id="form-creat-product" 
-        method="POST"
-        enctype="multipart/form-data"
-    )
-        div(class="form-group")
-            label(for="title") Tiêu đề
-            input(
-                type="text"
-                class="form-control"
-                id="title"
-                name="title"
-                value=data.title 
-            )
-        div(class="form-group")
-            label(for="title") Danh mục cha
-            select(
-                name="parent_id"
-                id="parent_id"
-                class="form-control"
-            ) 
-                option(value="") ---Chọn danh mục cha--- 
-                if(records)
-                    +select-tree(records, 1, data.parent_id)
+    if(role.permissions.includes("products-category_edit"))
+        h1 #{title}     
+        form(
+            action=`${prefixAdmin}/products-category/edit/${data.id}?_method=PATCH`
+            id="form-creat-product" 
+            method="POST"
+            enctype="multipart/form-data"
+        )
+            div(class="form-group")
+                label(for="title") Tiêu đề
+                input(
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    value=data.title 
+                )
+            div(class="form-group")
+                label(for="title") Danh mục cha
+                select(
+                    name="parent_id"
+                    id="parent_id"
+                    class="form-control"
+                ) 
+                    option(value="") ---Chọn danh mục cha--- 
+                    if(records)
+                        +select-tree(records, 1, data.parent_id)
 
-        div.form-group
-            label(for="desc") Mô tả
-            textarea#description.form-control(
-                name="description"
-                rows="10"
-            )= data.description
-        div(
-            class="form-group"
-            upload-image
-            )
-            label(for="thumbnail") Ảnh
-            input(
-                type="file"
-                class="form-control"
-                id="thumbnail"
-                name="thumbnail"
-                accept ="image/*"
-                upload-image-input
-            )
-            img(
-                src=data.thumbnail
-                alt= ""
-                width="120"
-                class="rounded border mt-2" 
-                upload-img-preview
-            ) 
-            span(
-                delete-image-preview
-                class="delete-image-preview btn btn-sm btn-danger ms-2"
-            ) X
-        div(class="form-group mb-3")
-            label(for="position") Vị trí
-            input(
-                type="number"
-                class="form-control"
-                id="position"
-                name="position"
-                min="1"
-                placeholder="Tự động tăng"
-                value=data.position
-            )
-        div(class="form-group form-check form-check-inline")
-            input(
-                type="radio"
-                class="form-check-input"
-                id="statuscActive"
-                name="status"
-                value="active"
-                checked=data.status === 'active'
-            )
-            label(for="statuscActive" class="form-check-label") Còn hoạt động
-        div(class="form-group form-check form-check-inline mb-4")
-            input(
-                type="radio"
-                class="form-check-input"
-                id="statuscUnactive"
-                name="status"
-                value="unactive"
-                checked=data.status === 'unactive'
-            )
-            label(for="statuscUnactive" class="form-check-label") Không hoạt động
-        div(class="form-group")
-            button(
-                type="submit"
-                class="btn btn-primary"
-            ) Cập nhật sản phẩm
+            div.form-group
+                label(for="desc") Mô tả
+                textarea#description.form-control(
+                    name="description"
+                    rows="10"
+                )= data.description
+            div(
+                class="form-group"
+                upload-image
+                )
+                label(for="thumbnail") Ảnh
+                input(
+                    type="file"
+                    class="form-control"
+                    id="thumbnail"
+                    name="thumbnail"
+                    accept ="image/*"
+                    upload-image-input
+                )
+                img(
+                    src=data.thumbnail
+                    alt= ""
+                    width="120"
+                    class="rounded border mt-2" 
+                    upload-img-preview
+                ) 
+                span(
+                    delete-image-preview
+                    class="delete-image-preview btn btn-sm btn-danger ms-2"
+                ) X
+            div(class="form-group mb-3")
+                label(for="position") Vị trí
+                input(
+                    type="number"
+                    class="form-control"
+                    id="position"
+                    name="position"
+                    min="1"
+                    placeholder="Tự động tăng"
+                    value=data.position
+                )
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="statuscActive"
+                    name="status"
+                    value="active"
+                    checked=data.status === 'active'
+                )
+                label(for="statuscActive" class="form-check-label") Còn hoạt động
+            div(class="form-group form-check form-check-inline mb-4")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="statuscUnactive"
+                    name="status"
+                    value="unactive"
+                    checked=data.status === 'unactive'
+                )
+                label(for="statuscUnactive" class="form-check-label") Không hoạt động
+            div(class="form-group")
+                button(
+                    type="submit"
+                    class="btn btn-primary"
+                ) Cập nhật sản phẩm
+    else 
+        h1 Không có quyền
 block script 
     script(src="/admin/js/category.js") 
     

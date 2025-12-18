@@ -2,155 +2,190 @@ extends ../../layout/default
 include ../../mixins/alert-success
 
 block main
-    h1 Phân quyền
+    if(role.permissions.includes("roles_permission"))
+        h1 Phân quyền
 
-    +alert-success(5000)
-    +alert-error(5000)
+        +alert-success(5000)
+        +alert-error(5000)
 
-    if record
-        div(data-record=record)
-        button(
-            type="submit" 
-            class="btn btn-primary mb-3"
-            button-submit
-        ) Cập nhật
+        if record
+            div(data-record=record)
+            button(
+                type="submit" 
+                class="btn btn-primary mb-3"
+                button-submit
+            ) Cập nhật
 
-        table(
-            table-permission
-            class="table table-bordered"
-        )
-            thead
-                tr
-                    th Tính năng
-                    each item in record
-                        th.text-center #{item.title}
-            tbody
-                //- danh mục
-                tr(data-name="id")
-                    td 
-                        strong(style="color: red") Danh mục sản phẩm
-                    each item in record
+            table(
+                table-permission
+                class="table table-bordered"
+            )
+                thead
+                    tr
+                        th Tính năng
+                        each item in record
+                            th.text-center #{item.title}
+                tbody
+                    //- danh mục
+                    tr(data-name="id")
                         td 
-                            input(value=item.id class="text-center d-none")
-                tr(data-name="products-category_view")
-                    td Xem
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
+                            strong(style="color: red") Danh mục sản phẩm
+                        each item in record
+                            td 
+                                input(value=item.id class="text-center d-none")
+                    tr(data-name="products-category_view")
+                        td Xem
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
 
-                tr(data-name="products-category_create")
-                    td Thêm mới
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
+                    tr(data-name="products-category_create")
+                        td Thêm mới
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
 
-                tr(data-name="products-category_edit")
-                    td Chỉnh sửa
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
-                tr(data-name="products-category_delete")
-                    td Xóa
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
+                    tr(data-name="products-category_edit")
+                        td Chỉnh sửa
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
+                    tr(data-name="products-category_delete")
+                        td Xóa
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
 
-                //- sản phẩm
-                tr(data-name="id")
-                    td 
-                        strong(style="color: red") Sản phẩm
-                tr(data-name="products_view")
-                    td Xem
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
+                    //- sản phẩm
+                    tr(data-name="id")
+                        td 
+                            strong(style="color: red") Sản phẩm
+                    tr(data-name="products_view")
+                        td Xem
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
 
-                tr(data-name="products_create")
-                    td Thêm mới
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
+                    tr(data-name="products_create")
+                        td Thêm mới
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
 
-                tr(data-name="products_edit")
-                    td Chỉnh sửa
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
-                tr(data-name="products_delete")
-                    td Xóa
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
-                //- Nhóm quyền
-                tr(data-name="id")
-                    td 
-                        strong(style="color: red") Nhóm quyền
-                tr(data-name="Roles_view")
-                    td Xem
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
+                    tr(data-name="products_edit")
+                        td Chỉnh sửa
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
+                    tr(data-name="products_delete")
+                        td Xóa
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
+                    //- Nhóm quyền
+                    tr(data-name="id")
+                        td 
+                            strong(style="color: red") Nhóm quyền
+                    tr(data-name="Roles_view")
+                        td Xem
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
 
-                tr(data-name="roles_create")
-                    td Thêm mới
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
+                    tr(data-name="roles_create")
+                        td Thêm mới
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
 
-                tr(data-name="roles_edit")
-                    td Chỉnh sửa
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
-                tr(data-name="roles_delete")
-                    td Xóa
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
-                tr(data-name="roles_permission")
-                    td Nhóm quyền
-                    each item in record
-                        td.text-center
-                            input(
-                                type="checkbox"
-                            )
-    else 
-        a(
-            href="admin/roles/create"
-            class="btn-primary"
-        )
+                    tr(data-name="roles_edit")
+                        td Chỉnh sửa
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
+                    tr(data-name="roles_delete")
+                        td Xóa
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
+                    tr(data-name="roles_permission")
+                        td Phân quyền
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
+                    //- Tài khoản
+                    tr(data-name="id")
+                        td 
+                            strong(style="color: red") Tài khoản
+                    tr(data-name="accounts_view")
+                        td Xem
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
 
-    form(
-      action=`${prefixAdmin}/roles/permission?_method=PATCH`
-      method="POST"
-      id="form-change-permission"
-      class="d-none"
-    ) 
-        div(class="form-group")
-            input(type="text" class="form-control" name="permission")
+                    tr(data-name="accounts_create")
+                        td Thêm mới
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
+
+                    tr(data-name="accounts_edit")
+                        td Chỉnh sửa
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
+                    tr(data-name="accounts_delete")
+                        td Xóa
+                        each item in record
+                            td.text-center
+                                input(
+                                    type="checkbox"
+                                )
+        else 
+            a(
+                href="admin/roles/create"
+                class="btn-primary"
+            )
+
+        form(
+        action=`${prefixAdmin}/roles/permission?_method=PATCH`
+        method="POST"
+        id="form-change-permission"
+        class="d-none"
+        ) 
+            div(class="form-group")
+                input(type="text" class="form-control" name="permission")
 block script 
     script(src="/admin/js/roles.js")

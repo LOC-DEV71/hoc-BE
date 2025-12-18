@@ -3,57 +3,67 @@ block append head
     link(rel="stylesheet", href="/admin/css/detail.css")
 
 block main
-  .product-detail-card
-    h1.title Chi tiết sản phẩm
+  if(role.permissions.includes("products_view"))
+    .product-detail-card
+      h1.title Chi tiết sản phẩm
 
-    .detail-wrapper
-      .image-box
-        img.product-img(
-          src=product.thumbnail
-          alt=product.title
-        )
+      .detail-wrapper
+        .image-box
+          img.product-img(
+            src=product.thumbnail
+            alt=product.title
+          )
 
-      .info-box
-        h2.product-title #{product.title}
+        .info-box
+          h2.product-title #{product.title}
 
-        p.info-row
-          strong.info-label Mô tả:
-          span.info-text!= product.description
+          p.info-row
+            strong.info-label Mô tả:
+            span.info-text!= product.description
 
-        p.info-row
-          strong.info-label Giá:
-          span.price #{product.price} VNĐ
-        p.info-row
-          strong.info-label Id category:
-          span.price #{product.product_category_id}
+          p.info-row
+            strong.info-label Giá:
+            span.price #{product.price} VNĐ
+          p.info-row
+            strong.info-label Id category:
+            span.price #{product.product_category_id}
 
-        p.info-row
-          strong.info-label Giảm giá:
-          span.info-text #{product.discountPercentage} %
+          p.info-row
+            strong.info-label Giảm giá:
+            span.info-text #{product.discountPercentage} %
 
-        p.info-row
-          strong.info-label Tồn kho:
-          span.info-text #{product.stock}
+          p.info-row
+            strong.info-label Tồn kho:
+            span.info-text #{product.stock}
 
-        p.info-row
-          strong.info-label Trạng thái:
-          span.badge.status-badge #{product.status === 'active' ? 'Còn hàng' : 'Hết hàng'}
+          p.info-row
+            strong.info-label Trạng thái:
+            span.badge.status-badge #{product.status === 'active' ? 'Còn hàng' : 'Hết hàng'}
 
-        p.info-row
-          strong.info-label Vị trí:
-          span.info-text #{product.position}
+          p.info-row
+            strong.info-label Vị trí:
+            span.info-text #{product.position}
 
-        p.info-row
-          strong.info-label Deleted:
-          span.badge.delete-badge #{product.deleted === true ? 'Đã xóa' : 'Chưa xóa'}
+          p.info-row
+            strong.info-label Deleted:
+            span.badge.delete-badge #{product.deleted === true ? 'Đã xóa' : 'Chưa xóa'}
 
-        hr.sep
+          hr.sep
 
-        p.meta
-          | Tạo lúc: #{createFormatDate}
-          br
-          | Cập nhật lúc: #{updateFormatDate}
+          p.meta
+            | Người tạo: #{product.fullname}
+            br
+            | Tạo lúc: #{createFormatDate}
+            br
+            | Cập nhật lúc:
 
-        .buttons
-          a.btn.back(href=`${prefixAdmin}/products`) Quay lại
-          a.btn.edit(href=`${prefixAdmin}/products/edit/${product._id}`) Sửa
+          ul
+            each item in updateFormatDate
+              li
+                strong #{item.fullname}
+                |  – #{item.time}
+
+
+          .buttons
+            a.btn.back(href=`${prefixAdmin}/products`) Quay lại
+            a.btn.edit(href=`${prefixAdmin}/products/edit/${product._id}`) Sửa

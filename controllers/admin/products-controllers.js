@@ -1,10 +1,12 @@
 const Product = require("../../models/products-models");
 const ProductCategorySchema = require("../../models/products.category.model");
+const Accounts = require("../../models/accounts-models");
 const fillterStatusHelper = require("../../helpers/fillterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const generateSlug = require("../../helpers/slugHelper");
 const createTreeHelper = require("../../helpers/create-tree");
+const dateHelper = require("../../helpers/dateHelper");
 
 //[GET] /admin/products
 module.exports.products = async (req, res) => {
@@ -88,7 +90,17 @@ module.exports.changeStatus = async (req, res) =>{
     const status = req.params.status;
     const id = req.params.id;
 
-    await Product.updateOne({_id: id}, {status: status})
+    const updatedBy = {
+        account_id: res.locals.user._id,
+        updatedAt: new Date()
+    };
+    await Product.updateOne(
+        {_id: id}, 
+        {// Mục đích cái này nhằm tạo ra nhiều object những user đã sửa
+            $set: {status: status},
+            $push: { updatedBy }
+        })
+    
 
     req.flash("success", `Cập nhật thành công trạng thái ${status}`)
 
@@ -100,22 +112,46 @@ module.exports.changeStatus = async (req, res) =>{
 module.exports.changeMulti = async (req, res) =>{
     const type = req.body.type;
     const ids = req.body.ids.split(", ");
+    const updatedBy = {
+        account_id: res.locals.user._id,
+        updatedAt: new Date()
+    };
 
     switch (type) {
         case "active":
-            await Product.updateMany({_id: {$in: ids}}, {status: "active"});
+            await Product.updateMany(
+                {_id: {$in: ids}}, 
+                {
+                    // Mục đích cái này nhằm tạo ra nhiều object những user đã sửa
+                    $set: {status: "active"},
+                    $push: { updatedBy }
+                }
+            );
             req.flash("success", "Cập nhật còn hàng thành công!");
             break;
 
         case "unactive":
-            await Product.updateMany({_id: {$in: ids}}, {status: "unactive"});
+            await Product.updateMany(
+                {_id: {$in: ids}}, 
+                {
+                    // Mục đích cái này nhằm tạo ra nhiều object những user đã sửa
+                    $set: {status: "unactive"},
+                    $push: { updatedBy }
+                }
+            );
             req.flash("success", "Cập nhật hết hàng thành công!");
             break;
 
         case "delete-all":
             await Product.updateMany(
                 {_id: {$in: ids}}, 
-                {deleted: true, deletedAt: new Date()}
+                {
+                    deleted: true, 
+                    deletedBy:{
+                        account_id: res.locals.user.id,
+                        deletedAt: new Date()
+                    }
+                }
             );
             req.flash("success", "Xóa thành công!");
             break;
@@ -127,7 +163,11 @@ module.exports.changeMulti = async (req, res) =>{
 
                 await Product.updateOne(
                     { _id: id },
-                    { position: position }
+                    { 
+                        // Mục đích cái này nhằm tạo ra nhiều object những user đã sửa
+                        $set: {position: position},
+                        $push: { updatedBy }
+                     }
                 );
             }
             req.flash("success", "Cập nhật vị trí thành công!");
@@ -151,7 +191,10 @@ module.exports.deleteItem = async (req, res) =>{
         { _id: id },
         {
             deleted: true,
-            deletedAt: new Date()
+            deletedBy:{
+                account_id: res.locals.user.id,
+                deletedAt: new Date()
+            }
         }
     );
 
@@ -187,6 +230,9 @@ module.exports.createPost = async (req, res) => {
         req.body.position = parseInt(req.body.position)
     }
 
+    req.body.createdBy = {
+        account_id: res.locals.user.id
+    }
 
     const products = new Product(req.body);
     await products.save();
@@ -235,7 +281,21 @@ module.exports.editPatch = async (req, res) => {
     }
 
     try {
-        await Product.updateOne({ _id: id }, req.body);
+
+        const updatedBy = {
+            account_id: res.locals.user._id,
+            updatedAt: new Date()
+        };
+
+        await Product.updateOne(
+            { _id: id },
+            {
+                // Mục đích cái này nhằm tạo ra nhiều object những user đã sửa
+                $set: req.body,
+                $push: { updatedBy }
+            }
+        );
+
 
         req.flash("success", "Cập nhật sản phẩm thành công!");
         return res.redirect("/admin/products");
@@ -256,25 +316,52 @@ module.exports.detail = async (req, res) => {
         _id: id
     }
 
-    const products = await Product.findById(find);
+    const products = await Product.findOne(find);
+        
+    
+    // Lấy ra thông tin người tạo
+    const userCreate = await Accounts.findOne({
+        _id: products.createdBy.account_id
+    })
+
+    
+    const productObj = products.toObject();
+    if(userCreate){
+        productObj.fullname = userCreate.fullname;
+    }
+
+    //Danh sách người sửa
+    const updateList = products.updatedBy.map(item => ({
+        userId: item.account_id,
+        time: new Date(item.updatedAt).toLocaleString("vi-VN")
+    }));
+
+    const userList = await Accounts.find().select("id fullname");
+ 
+
+    const userUpdateList = [];
+
+    for (const item of updateList) {
+        const user = userList.find(
+            u => u._id.toString() === item.userId
+        );
+
+        if (user) {
+            userUpdateList.push({
+                id: user._id,
+                fullname: user.fullname,
+                time: item.time
+            });
+        }
+    }
 
 
-    const formatDate = (date) => {
-        if (!date) return "";
-        return new Date(date).toLocaleString("vi-VN", {
-            hour: "2-digit",
-            minute: "2-digit",
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-        });
-    };
 
     res.render("admin/pages/products/detail", {
         title: "Chi tiết sản phẩm",
-        product: products,
-        createFormatDate: formatDate(products.createdAt),
-        updateFormatDate: formatDate(products.updatedAt)
+        product: productObj,
+        createFormatDate: dateHelper.formatDate(products.createdBy.createAt),
+        updateFormatDate: userUpdateList
     })
 }
    
