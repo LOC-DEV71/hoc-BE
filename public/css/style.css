@@ -34,3 +34,69 @@
     padding: 5px;
 }
 
+
+
+/* RESET */
+.inner-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.inner-menu li {
+    position: relative;
+    white-space: nowrap;
+}
+
+.inner-menu a {
+    display: block;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #222;
+    background: #fff;
+}
+
+/* MENU CẤP 1 */
+.inner-menu > ul {
+    display: flex;
+}
+
+/* SUBMENU CHUNG */
+.inner-menu li > ul {
+    position: absolute;
+    min-width: 200px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.2s ease;
+    z-index: 1000;
+}
+
+/* CẤP 1: XỊT XUỐNG */
+.inner-menu > ul > li > ul {
+    top: 100%;
+    left: 0;
+}
+
+/* 🔥 CẤP 2+ : XỔ QUA BÊN TRÁI */
+.inner-menu ul ul > li > ul {
+    top: 0;
+    left: auto;
+    right: 100%;
+}
+
+/* HOVER */
+.inner-menu li:hover > ul {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* UI */
+.inner-menu a:hover {
+    background: #f5f5f5;
+}
+
+.inner-menu ul ul a {
+    padding: 10px 18px;
+}

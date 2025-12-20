@@ -3,6 +3,7 @@ const products = require("./products");
 const productsCategoryRoutes = require("./products.category-route");
 const roles= require("./roles");
 const accounts = require("./accounts")
+const myAccount = require("./my-account");
 const authRoutes = require("./auth-routes")
 const systemConfig = require("../../config/system");
 const middlewareAuth = require("../../middleware/admin/auth-middleware");
@@ -30,6 +31,11 @@ module.exports = (app) =>{
         ADMIN_URL + "/accounts", 
         middlewareAuth.requireAuth,
         accounts)
+    app.use(
+        ADMIN_URL + "/my-account",
+        middlewareAuth.requireAuth,
+        myAccount
+    )
     app.use(
         ADMIN_URL + "/auth", 
         authRoutes

@@ -1,0 +1,99 @@
+extends ../../layout/default
+include ../../mixins/alert-success
+block main 
+    h1(class="mb-4") #{title}
+
+    +alert-error(5000)
+    +alert-success(5000)
+
+    form(
+        action=`${prefixAdmin}/my-account/edit/${account.id}?_method=PATCH`
+        method="POST"
+        enctype="multipart/form-data"
+    )
+        div(class="form-group")
+            label(for="title") Họ tên *
+            input(
+                type="text"
+                class="form-control"
+                id="fullname"
+                name="fullname"
+                value=account.fullname
+            )
+        div(class="form-group")
+            label(for="title") Email *
+            input(
+                type="text"
+                class="form-control"
+                id="email"
+                name="email"
+                value=account.email
+            )
+        div(class="form-group")
+            label(for="title") Phone *
+            input(
+                type="number"
+                class="form-control"
+                id="phone"
+                name="phone"
+                value=account.phone
+            )
+        div(class="form-group")
+            label(for="price") Mật khẩu *
+             input(
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+            )
+        div(
+            class="form-group"
+            upload-image
+            )
+            label(for="thumbnail") Ảnh đại diện
+            input(
+                type="file"
+                class="form-control"
+                id="avatar"
+                name="avatar"
+                accept ="image/*"
+                upload-image-input
+            )
+            img(
+                src=account.avatar
+                alt=account.title
+                width="120"
+                class="rounded border mt-2" 
+                upload-img-preview
+            ) 
+            span(
+                delete-image-preview
+                class="delete-image-preview btn btn-sm btn-danger ms-2"
+            ) X
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input"
+                id="statuscActive"
+                name="status"
+                value="active"
+                checked=(account.status === "active" ? true : false)
+            )
+            label(for="statuscActive" class="form-check-label") Hoạt động
+        div(class="form-group form-check form-check-inline mb-4")
+            input(
+                type="radio"
+                class="form-check-input"
+                id="statuscUnactive"
+                name="status"
+                value="unactive"
+                checked=(account.status === "unactive" ? true : false)            
+                )
+            label(for="statuscUnactive" class="form-check-label") Không hoạt động
+        div(class="form-group")
+            button(
+                type="submit"
+                class="btn btn-primary"
+            ) Cập nhật tài khoản
+    
+    
